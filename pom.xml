@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>top.kooriookami</groupId>
+    <artifactId>bili</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>bili</name>
+    <description>Demo project for Spring Boot</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--打包时排除tomcat 在这里将scope属性设置为provided，
+         这样在最终形成的WAR中不会包含这个JAR包，
+         因为Tomcat或Jetty等服务器在运行时将会提供相关的API类。-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+            <!--只有设置为true时才会热启动，即当修改了html、css、js等这些静态资源后不用重启项目直接刷新即可-->
+        </dependency>
+
+        <!--thymeleaf 模块（其实默认会自动包含 web 模块，但是还是两个一起给了）-->
+        <!--如果 parent 是 官网的 spring-boot-starter-parent，并且是最新版的，则默认的 spring-boot-starter-thymeleaf 是 2 的版本，太旧。-->
+        <!--需要在 properties 主动配置 thymeleaf 到较新的版本-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!--&lt;!&ndash;Druid Spring Boot&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.github.drtrang</groupId>-->
+            <!--<artifactId>druid-spring-boot2-starter</artifactId>-->
+            <!--<version>1.1.9</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.github.drtrang</groupId>-->
+            <!--<artifactId>druid-spring-boot2-actuator-starter</artifactId>-->
+            <!--<version>1.1.9</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

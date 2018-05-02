@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎进入kooriookami的主页Hi~ o(*￣▽￣*)ブ</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.3.6/index.js"></script>
+    <link href="https://cdn.bootcss.com/element-ui/2.3.6/theme-chalk/index.css" rel="stylesheet">
+    <style>
+        body {
+            min-width: 800px;
+            background-color: whitesmoke;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        .div-size {
+            background: white url("tv.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .div-button {
+            width: 100%;
+            position: absolute;
+            text-align: center;
+            bottom: 0;
+            margin: 20px 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 微软雅黑;
+            color: #333333;
+        }
+
+        .font {
+            font-family: 黑体;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <div>
+        <h1>
+            欢迎进入kooriookami的主页Hi~ o(*￣▽￣*)ブ
+        </h1>
+    </div>
+
+    <div class="div-size" :style="playerSize">
+        <div v-for="val in arr">
+            <marquee :scrollamount="val.speed" style="position: absolute" :style="{top:val.top}">
+                <div class="font" :style="{color : val.color}">
+                    <div v-if="val.color==='#000000'" :style="{'text-shadow':danmakuShadowWhite}">
+                        {{val.text}}
+                    </div>
+                    <div v-else :style="{'text-shadow':danmakuShadowBlack}">
+                        {{val.text}}
+                    </div>
+                </div>
+            </marquee>
+        </div>
+
+        <div class="div-button">
+            <el-button plain @click="bilibili">进入B站</el-button>
+            <el-input maxlength="100" v-model="danmakuInput" style="width: 60%" placeholder="发点弹幕吧(～￣▽￣)～"
+                      @keydown.enter.native="send(danmakuInput,danmakuColor)"></el-input>
+            <el-color-picker v-model="danmakuColor" style="vertical-align: bottom"></el-color-picker>
+            <el-button plain @click="send(danmakuInput,danmakuColor)">发送</el-button>
+        </div>
+    </div>
+
+    <div style="height: 20px">
+
+    </div>
+</div>
+<script>
+    window.onresize = function () {
+        let w = document.body.clientWidth * 0.8;
+        vm.playerSize.height = w * 9 / 16 + 'px';
+        vm.playerSize.width = w + 'px';
+        vm.playerHeight = w * 9 / 16;
+    };
+
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            danmakuInput: '',
+            danmakuColor: '#ffffff',
+            danmakuShadowWhite: '1px 0px 1px #ffffff,-1px 0px 1px #ffffff,0px 1px 1px #ffffff,0px -1px 1px #ffffff',
+            danmakuShadowBlack: '1px 0px 1px #000000,-1px 0px 1px #000000,0px 1px 1px #000000,0px -1px 1px #000000',
+            danmakuPosition: '',
+            playerHeight: '',
+            count: '',
+            playerSize: {
+                height: '',
+                width: '',
+            },
+            arr: [
+                {text: '各位下午好哇~(#^.^#)', color: '#6699ff', speed: '', top: ''},
+                {text: 'こんにちは www', color: '', speed: '', top: ''},
+                {text: '楼上的两个你们好呀~~~', color: '', speed: '', top: ''},
+                {text: '竟然还有3个小伙伴和我同时在看！(￣ω￣(￣ω￣〃 (￣ω￣〃)ゝ', color: '', speed: '', top: ''},
+                {
+                    text: '厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞广下厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞' +
+                    '广下厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞广下厂厂下广卞廿十一卉半与本二上旦上二本与半卉一',
+                    color: '#ff0000',
+                    speed: '',
+                    top: ''
+                },
+            ],
+        },
+        mounted() {
+            let w = document.body.clientWidth * 0.8;
+            this.playerSize.height = w * 9 / 16 + 'px';
+            this.playerSize.width = w + 'px';
+            this.playerHeight = w * 9 / 16;
+            let i = 0;
+            this.count = 0;
+            for (i; i < this.arr.length; i++) {
+                let speed = this.arr[i].text.length;
+                this.arr[i].speed = speed / 2 + 10;
+                this.danmakuPosition = this.count * 29;
+                this.arr[i].top = this.danmakuPosition + 'px';
+                this.count++;
+                if (this.danmakuPosition > this.playerHeight - 58) {
+                    this.count = 0;
+                    this.danmakuPosition = 0;
+                }
+                if (this.arr[i].color === null || this.arr[i].color === '') {
+                    this.arr[i].color = '#ffffff';
+                }
+            }
+        },
+        methods: {
+            send(danmakuInput, danmakuColor) {
+                if (danmakuColor === null || danmakuColor === '') {
+                    danmakuColor = '#ffffff';
+                }
+                if (danmakuInput.trim() === '') {
+                    this.$message({
+                        message: '请填写弹幕o(*￣︶￣*)o',
+                        type: 'warning',
+                        center: true,
+                    });
+                }
+                else {
+                    let speed = danmakuInput.length / 2 + 10;
+                    this.danmakuPosition = this.count * 29;
+                    this.arr.push({
+                        'text': danmakuInput,
+                        'color': danmakuColor,
+                        'speed': speed,
+                        'top': this.danmakuPosition + 'px',
+                    });
+                    this.count++;
+                    if (this.danmakuPosition > this.playerHeight - 58) {
+                        this.count = 0;
+                        this.danmakuPosition = 0;
+                    }
+                    this.danmakuInput = '';
+                }
+            },
+            bilibili() {
+                window.open('http://bilibili.kooriookami.top:8000');
+            },
+        }
+    })
+</script>
+</body>
+</html>
