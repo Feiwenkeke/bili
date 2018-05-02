@@ -41,6 +41,7 @@ public class IndexController {
 
     @GetMapping(value = "/getAll")
     public ArrayList<Barrage> getAll(){
+        log.info("getAll has been called");
         if (flag==0){
             reSet();
         }
@@ -49,9 +50,21 @@ public class IndexController {
 
     @PutMapping(value ="/addOne")
     public String addOne(@RequestBody Barrage b){
-        System.out.println(b.toString());
+        log.info("addOne:"+b.toString());
         if (barrages.size()>=Max_Size){
             barrages.remove(barrages.get(0));
+        }
+        if (b.getText()==null){
+            return "ERROR";
+        }
+        if(b.getColor()==null){
+            b.setColor("");
+        }
+        if (b.getSpeed()==null){
+            b.setSpeed("");
+        }
+        if (b.getTop()==null){
+            b.setTop("");
         }
         barrages.add(b);
         return "OK";

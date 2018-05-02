@@ -21,7 +21,16 @@ public class Barrage {
         this.top = top;
     }
 
+    public String getTop() {
+        return top;
+    }
+
+    public void setTop(String top) {
+        this.top = top;
+    }
+
     @Override
+
     public String toString() {
         return "Barrage{" +
                 "text='" + text + '\'' +

@@ -6,6 +6,8 @@
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
     <script src="https://cdn.bootcss.com/element-ui/2.3.6/index.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.3.6/theme-chalk/index.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
     <style>
         body {
             min-width: 800px;
@@ -82,10 +84,11 @@
     </div>
 
     <div style="height: 20px">
-
     </div>
 </div>
 <script>
+
+
     window.onresize = function () {
         let w = document.body.clientWidth * 0.8;
         vm.playerSize.height = w * 9 / 16 + 'px';
@@ -108,40 +111,47 @@
                 width: '',
             },
             arr: [
-                {text: '各位下午好哇~(#^.^#)', color: '#6699ff', speed: '', top: ''},
-                {text: 'こんにちは www', color: '', speed: '', top: ''},
-                {text: '楼上的两个你们好呀~~~', color: '', speed: '', top: ''},
-                {text: '竟然还有3个小伙伴和我同时在看！(￣ω￣(￣ω￣〃 (￣ω￣〃)ゝ', color: '', speed: '', top: ''},
-                {
-                    text: '厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞广下厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞' +
-                    '广下厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞广下厂厂下广卞廿十一卉半与本二上旦上二本与半卉一',
-                    color: '#ff0000',
-                    speed: '',
-                    top: ''
-                },
+                // {text: '各位下午好哇~(#^.^#)', color: '#6699ff', speed: '', top: ''},
+                // {text: 'こんにちは www', color: '', speed: '', top: ''},
+                // {text: '楼上的两个你们好呀~~~', color: '', speed: '', top: ''},
+                // {text: '竟然还有3个小伙伴和我同时在看！(￣ω￣(￣ω￣〃 (￣ω￣〃)ゝ', color: '', speed: '', top: ''},
+                // {
+                //     text: '厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞广下厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞' +
+                //     '广下厂下广卞廿十一卉半与本二上旦上二本与半卉一十廿卞广下厂厂下广卞廿十一卉半与本二上旦上二本与半卉一',
+                //     color: '#ff0000',
+                //     speed: '',
+                //     top: ''
+                // },
             ],
         },
         mounted() {
+            axios({
+                method: 'get',
+                url: '/getAll',
+            }).then(res => {
+                this.arr = res.data;
+                let i = 0;
+                this.count = 0;
+                for (i; i < this.arr.length; i++) {
+                    let speed = this.arr[i].text.length;
+                    this.arr[i].speed = speed / 2 + 10;
+                    this.danmakuPosition = this.count * 29;
+                    this.arr[i].top = this.danmakuPosition + 'px';
+                    this.count++;
+                    if (this.danmakuPosition > this.playerHeight - 58) {
+                        this.count = 0;
+                        this.danmakuPosition = 0;
+                    }
+                    if (this.arr[i].color === null || this.arr[i].color === '') {
+                        this.arr[i].color = '#ffffff';
+                    }
+                }
+            });
             let w = document.body.clientWidth * 0.8;
             this.playerSize.height = w * 9 / 16 + 'px';
             this.playerSize.width = w + 'px';
             this.playerHeight = w * 9 / 16;
-            let i = 0;
-            this.count = 0;
-            for (i; i < this.arr.length; i++) {
-                let speed = this.arr[i].text.length;
-                this.arr[i].speed = speed / 2 + 10;
-                this.danmakuPosition = this.count * 29;
-                this.arr[i].top = this.danmakuPosition + 'px';
-                this.count++;
-                if (this.danmakuPosition > this.playerHeight - 58) {
-                    this.count = 0;
-                    this.danmakuPosition = 0;
-                }
-                if (this.arr[i].color === null || this.arr[i].color === '') {
-                    this.arr[i].color = '#ffffff';
-                }
-            }
+
         },
         methods: {
             send(danmakuInput, danmakuColor) {
@@ -156,6 +166,14 @@
                     });
                 }
                 else {
+                    axios({
+                        method:'put',
+                        url:'/addOne',
+                        data:{
+                            'text': danmakuInput,
+                            'color': danmakuColor,
+                        }
+                    });
                     let speed = danmakuInput.length / 2 + 10;
                     this.danmakuPosition = this.count * 29;
                     this.arr.push({
